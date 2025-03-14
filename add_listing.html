@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng tin nhà trọ</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <h1>Đăng tin nhà trọ</h1>
+    <form id="listing-form">
+        <label for="title">Tiêu đề:</label>
+        <input type="text" id="title" name="title" required>
+        
+        <label for="address">Địa chỉ:</label>
+        <input type="text" id="address" name="address" required>
+        
+        <label for="price">Giá thuê:</label>
+        <input type="number" id="price" name="price" required>
+        
+        <label for="latitude">Vĩ độ:</label>
+        <input type="text" id="latitude" name="latitude" required>
+        
+        <label for="longitude">Kinh độ:</label>
+        <input type="text" id="longitude" name="longitude" required>
+        
+        <button type="submit">Đăng tin</button>
+    </form>
+    
+    <script src="/static/js/script.js"></script>
+</body>
+</html>
+

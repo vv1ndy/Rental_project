@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh sách nhà trọ</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Danh sách nhà trọ</h1>
+    <div id="map" style="width: 100%; height: 400px;"></div>
+    <ul id="listing"></ul>
+
+    <script>
+        mapboxgl.accessToken = pk.eyJ1IjoicGhvbmdkZCIsImEiOiJjbTg4Z25ocnAwMTgzMmlwcHU4N3hobmo5In0.hna31Ganho4KuG5Ml5fw1g;
+        var map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/streets-v11',
+            center: [105.854444, 21.0285], // Tọa độ mặc định (ví dụ: Hà Nội, Việt Nam)
+            zoom: 12
+        });
+
+        async function loadListings() {
+            const response = await fetch('/get_listings');
+            const data = await response.json();
+            const listingContainer = document.getElementById('listing');
+            
+            data.forEach(listing => {
+                const li = document.createElement('li');
+                li.textContent = `${listing.title} - ${listing.address} - ${listing.price} VND`;
+                listingContainer.appendChild(li);
+                
+                // Thêm marker vào bản đồ
+                new mapboxgl.Marker()
+                    .setLngLat([parseFloat(listing.longitude), parseFloat(listing.latitude)])
+                    .setPopup(new mapboxgl.Popup().setHTML(`<strong>${listing.title}</strong><br>${listing.address}<br>Giá: ${listing.price} VND`))
+                    .addTo(map);
+        }
+
+        window.onload = loadListings;
+    </script>
+</body>
+</html>
+
