@@ -3,31 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đăng tin nhà trọ</title>
+    <title>Đăng ký nhà trọ</title>
     <link rel="stylesheet" href="/static/css/style.css">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-    <h1>Đăng tin nhà trọ</h1>
-    <form id="listing-form">
-        <label for="title">Tiêu đề:</label>
-        <input type="text" id="title" name="title" required>
-        
-        <label for="address">Địa chỉ:</label>
-        <input type="text" id="address" name="address" required>
-        
-        <label for="price">Giá thuê:</label>
-        <input type="number" id="price" name="price" required>
-        
-        <label for="latitude">Vĩ độ:</label>
-        <input type="text" id="latitude" name="latitude" required>
-        
-        <label for="longitude">Kinh độ:</label>
-        <input type="text" id="longitude" name="longitude" required>
-        
-        <button type="submit">Đăng tin</button>
-    </form>
+    <header>
+        <div class="navbar">
+            <a href="index.html" class="logo">Tìm Nhà Trọ</a>
+            <li><a href="index.html">Trang chủ</a></li>
+            <li><a href="#">Quản lý nhà trọ</a></li>
+            <li><a href="#">Đăng xuất</a></li>
+        </div>
+    </header>
     
-    <script src="/static/js/script.js"></script>
+    <div class="container">
+        <h2>Thêm nhà trọ mới</h2>
+        <form id="listing-form">
+            <label for="title">Tên Nhà Trọ:</label>
+            <input type="text" id="title" name="title" required>
+            
+            <label for="address">Địa chỉ:</label>
+            <input type="text" id="address" name="address" required>
+            
+            <label for="price">Giá Thuê:</label>
+            <input type="text" id="price" name="price" required>
+            
+            <label for="image">Hình Ảnh Nhà Trọ:</label>
+            <input type="file" id="image" name="image" required>
+            
+            <label for="video">Video Nhà Trọ (URL):</label>
+            <input type="url" id="video" name="video">
+            
+            <label for="description">Mô Tả Chi Tiết:</label>
+            <textarea id="description" name="description" rows="4" required></textarea>
+            
+            <label for="location">Địa Chỉ Nhà Trọ:</label>
+            <input type="text" id="location" name="location" required>
+            <button type="button" onclick="geocodeAddress()">Xác định vị trí</button>
+            
+            <div id="map"></div>
+            
+            <button type="submit">Đăng Nhà Trọ</button>
+        </form>
+    </div>
+    
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        mapboxgl.accessToken = "pk.eyJ1IjoicGhvbmdkZCIsImEiOiJjbTg4Z25ocnAwMTgzMmlwcHU4N3hobmo5In0.hna31Ganho4KuG5Ml5fw1g";
+        
+        var map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/streets-v11',
+            center: [105.854444, 21.0285], // Tọa độ của Hà Nội
+            zoom: 12
+        });
+        
+        function geocodeAddress() {
+            let address = document.getElementById("location").value;
+            if (!address) {
+                alert("Vui lòng nhập địa chỉ nhà trọ!");
+                return;
+            }
+            let apiUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(address)}.json?access_token=${mapboxgl.accessToken}`;
+            
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.features.length > 0) {
+                        let coordinates = data.features[0].geometry.coordinates;
+                        map.flyTo({ center: coordinates, zoom: 15 });
+                        new mapboxgl.Marker().setLngLat(coordinates).addTo(map);
+                    } else {
+                        alert("Không tìm thấy địa chỉ, vui lòng thử lại!");
+                    }
+                })
+                .catch(error => console.error("Lỗi khi xác định vị trí:", error));
+        }
+    </script>
 </body>
 </html>
-

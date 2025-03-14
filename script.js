@@ -1,4 +1,4 @@
-mapboxgl.accessToken = 'YOUR_MAPBOX_ACCESS_TOKEN';
+mapboxgl.accessToken = "pk.eyJ1IjoicGhvbmdkZCIsImEiOiJjbTg4Z25ocnAwMTgzMmlwcHU4N3hobmo5In0.hna31Ganho4KuG5Ml5fw1g"  ;
 const map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/streets-v11',
@@ -15,7 +15,7 @@ async function loadListings() {
 
         listings.forEach(listing => {
             const li = document.createElement('li');
-            li.textContent = `${listing.title} - ${listing.address} - ${listing.price} VND`;
+            li.innerHTML = `<strong>${listing.title}</strong> - ${listing.address} - ${listing.price} VND`;
             listingContainer.appendChild(li);
 
             // Add marker to the map
@@ -41,20 +41,33 @@ document.getElementById('listing-form').addEventListener('submit', async functio
     const title = document.getElementById('title').value;
     const address = document.getElementById('address').value;
     const price = document.getElementById('price').value;
-    const latitude = document.getElementById('latitude').value;
-    const longitude = document.getElementById('longitude').value;
-
-    const response = await fetch('/add_listing', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({ title, address, price, latitude, longitude })
-    });
     
-    const data = await response.json();
-    if (data) {
-        alert('Thêm nhà trọ thành công!');
-        this.reset();
-        location.reload();
+    try {
+        const geocodeResponse = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(address)}.json?access_token=${mapboxgl.accessToken}`);
+        const geocodeData = await geocodeResponse.json();
+        
+        if (geocodeData.features.length === 0) {
+            alert('Không tìm thấy địa chỉ!');
+            return;
+        }
+
+        const [longitude, latitude] = geocodeData.features[0].center;
+
+        const response = await fetch('/add_listing', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ title, address, price, latitude, longitude })
+        });
+        
+        const data = await response.json();
+        if (data.success) {
+            alert('Thêm nhà trọ thành công!');
+            this.reset();
+            location.reload();
+        } else {
+            alert('Lỗi khi thêm nhà trọ!');
+        }
+    } catch (error) {
+        console.error('Lỗi khi xác định vị trí:', error);
     }
 });
-
