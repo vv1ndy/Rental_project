@@ -24,6 +24,13 @@
     
     <div class="container">
         <h2>Danh sách nhà trọ</h2>
+        <div class="search-form">
+            <form id="search-form">
+                <label for="search-address">Tìm kiếm theo địa chỉ:</label>
+                <input type="text" id="search-address" name="search-address" placeholder="Nhập tên đường hoặc khu vực">
+                <button type="submit">Tìm kiếm</button>
+            </form>
+        </div>
         <div class="listings">
             <div class="listing" id="listing-container">
                 <!-- Các nhà trọ sẽ được hiển thị tại đây -->
@@ -42,8 +49,13 @@
             zoom: 12
         });
         
-        function loadListings() {
-            fetch('/get_listings')
+        function loadListings(longitude, latitude) {
+            let url = '/get_listings';
+            if (longitude && latitude) {
+                url += `?longitude=${longitude}&latitude=${latitude}`;
+            }
+
+            fetch(url)
                 .then(response => response.json())
                 .then(data => {
                     let container = document.getElementById('listing-container');
@@ -69,7 +81,35 @@
                 .catch(error => console.error('Lỗi khi tải danh sách:', error));
         }
         
-        document.addEventListener("DOMContentLoaded", loadListings);
+        document.addEventListener("DOMContentLoaded", function() {
+            loadListings();
+        });
+
+        document.getElementById('search-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const address = document.getElementById('search-address').value;
+
+            try {
+                const geocodeResponse = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(address)}.json?access_token=${mapboxgl.accessToken}`);
+                const geocodeData = await geocodeResponse.json();
+                
+                if (geocodeData.features.length === 0) {
+                    alert('Không tìm thấy địa chỉ!');
+                    return;
+                }
+
+                const [longitude, latitude] = geocodeData.features[0].center;
+
+                // Fly to the searched location
+                map.flyTo({ center: [longitude, latitude], zoom: 15 });
+
+                // Load listings near the searched location
+                loadListings(longitude, latitude);
+            } catch (error) {
+                console.error('Lỗi khi tìm kiếm địa chỉ:', error);
+            }
+        });
     </script>
 </body>
 </html>
