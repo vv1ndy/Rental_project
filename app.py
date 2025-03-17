@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, send_from_directory
 from pymongo import MongoClient
 import requests
 import os
 from bson.json_util import dumps
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="static", template_folder="templates")
 
 # Kết nối MongoDB
 client = MongoClient("mongodb://localhost:27017/")
@@ -24,9 +24,9 @@ def geocode_address(address):
         return coordinates[1], coordinates[0]  # Trả về latitude, longitude
     return None, None
 
-@app.route("/api/listings", methods=["GET"])
+@app.route("/")
 def home():
-    return app.send_static_file("index.html")
+    return render_template("index.html")
 
 @app.route("/get_listings", methods=["GET"])
 def get_listings():
@@ -81,6 +81,11 @@ def add_listing():
     
     listings_collection.insert_one(listing)
     return jsonify({"success": True, "message": "Nhà trọ đã được thêm!"})
+
+# Serve static files (CSS, JS, images)
+@app.route("/static/<path:filename>")
+def static_files(filename):
+    return send_from_directory(app.static_folder, filename)
 
 if __name__ == "__main__":
     app.run(debug=True, port=5001)
