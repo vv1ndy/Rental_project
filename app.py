@@ -15,40 +15,39 @@ listings_collection = db["listings"]
 MAPBOX_ACCESS_TOKEN = "pk.eyJ1IjoicGhvbmdkZCIsImEiOiJjbTg4Z25ocnAwMTgzMmlwcHU4N3hobmo5In0.hna31Ganho4KuG5Ml5fw1g"
 
 def geocode_address(address):
-    url = "https://api.mapbox.com/geocoding/v5/mapbox.places/{requests.utils.quote(address)}.json?access_token={MAPBOX_ACCESS_TOKEN}"
+    """ Chuyển địa chỉ thành tọa độ bằng Mapbox API """
+    url = f"https://api.mapbox.com/geocoding/v5/mapbox.places/{requests.utils.quote(address)}.json?access_token={MAPBOX_ACCESS_TOKEN}"
     response = requests.get(url)
     data = response.json()
     if "features" in data and len(data["features"]) > 0:
         coordinates = data["features"][0]["geometry"]["coordinates"]
-        return coordinates[1], coordinates[0]  # Trả về latitude, longitude
+        return coordinates[1], coordinates[0]  # Latitude, Longitude
     return None, None
 
-@app.route("/api/listings", methods=["GET"])
+@app.route("/")
 def home():
-    return app.send_static_file("index.html")
+    """ Hiển thị trang chủ """
+    return render_template("index.html")
 
 @app.route("/get_listings", methods=["GET"])
 def get_listings():
-    listings = list(client.rental.listings.find({}, {"_id": 0})) # Lấy tất cả dữ liệu, bỏ _id
+    """ Lấy danh sách nhà trọ từ MongoDB """
+    listings = list(listings_collection.find({}, {"_id": 0}))  # Đọc từ `listings_collection`
     return jsonify(listings)
 
 @app.route("/add_listing", methods=["POST"])
 def add_listing():
+    """ Thêm nhà trọ vào database """
     data = request.json
     title = data.get("title")
     address = data.get("address")
     price = data.get("price")
     image_url = data.get("image_url")
     video_url = data.get("video_url")
-    
+
     # Xác định tọa độ từ địa chỉ
-    lat, lon = None, None
-    latitude = None
-    longitude = None
-    geocode_data = geocode_address(address)
-    if geocode_data:
-        latitude, longitude = geocode_data
-    
+    latitude, longitude = geocode_address(address)
+
     listing = {
         "title": title,
         "address": address,
@@ -56,10 +55,10 @@ def add_listing():
         "latitude": latitude,
         "longitude": longitude,
         "image_url": image_url,
-        "video_url": request.json.get("video_url")
+        "video_url": video_url
     }
-    
-    client.rental.listings.insert_one(listing)
+
+    listings_collection.insert_one(listing)
     return jsonify({"message": "Nhà trọ đã được thêm!"})
 
 if __name__ == "__main__":
