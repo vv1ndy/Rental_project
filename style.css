@@ -98,14 +98,25 @@ h1 {
     margin-top: 20px;
     border-radius: 10px;
 }
+
+/* Thêm CSS cho dropdown và checkbox */
 .search-form {
     margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
-.search-form input[type="text"] {
+.search-form label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.search-form select {
     padding: 10px;
-    width: 300px;
-    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
 }
 
 .search-form button {
@@ -113,9 +124,50 @@ h1 {
     background-color: #007bff;
     color: white;
     border: none;
+    border-radius: 4px;
     cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 .search-form button:hover {
+    background-color: #0056b3;
+}
+/* Form đăng nhà trọ */
+#add-listing-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+#add-listing-form label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+#add-listing-form input,
+#add-listing-form textarea {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+#add-listing-form textarea {
+    resize: vertical;
+}
+
+#add-listing-form button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#add-listing-form button:hover {
     background-color: #0056b3;
 }

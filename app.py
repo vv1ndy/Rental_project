@@ -26,61 +26,59 @@ def geocode_address(address):
 
 @app.route("/")
 def home():
-    return render_template("index.html")
+    return render_template("index.html")  # Trả về trang chủ
 
 @app.route("/get_listings", methods=["GET"])
 def get_listings():
-    # Lấy tham số tìm kiếm từ query string
-    longitude = request.args.get("longitude", type=float)
-    latitude = request.args.get("latitude", type=float)
+    try:
+        listings = list(listings_collection.find({}, {"_id": 0}))  # Lấy danh sách nhà trọ từ MongoDB
+        return jsonify(listings)
+    except Exception as e:
+        print("Lỗi khi lấy danh sách nhà trọ:", e)
+        return jsonify({"error": "Lỗi khi lấy danh sách nhà trọ"}), 500
 
-    query = {}
-    if longitude and latitude:
-        # Tìm các nhà trọ trong phạm vi 10km từ vị trí tìm kiếm
-        query = {
-            "location": {
-                "$near": {
-                    "$geometry": {
-                        "type": "Point",
-                        "coordinates": [longitude, latitude]
-                    },
-                    "$maxDistance": 10000  # 10km
+@app.route("/add_listing", methods=["GET", "POST"])
+def add_listing():
+    print("⚡ Nhận request:", request.method)  # Debug request method
+    if request.method == "POST":
+        try:
+            data = request.json
+            title = data.get('title')
+            address = data.get('address')
+            price = data.get('price')
+            image_url = data.get('image_url')
+            description = data.get('description')
+
+            # Xác định tọa độ từ địa chỉ
+            latitude, longitude = geocode_address(address)
+
+            # Kiểm tra các trường bắt buộc
+            if not all([title, address, price, image_url, description, latitude, longitude]):
+                return jsonify({"success": False, "message": "Thiếu thông tin bắt buộc"}), 400
+
+            # Lưu thông tin nhà trọ vào MongoDB
+            listing = {
+                "title": title,
+                "address": address,
+                "price": price,
+                "image_url": image_url,
+                "description": description,
+                "latitude": latitude,
+                "longitude": longitude,
+                "location": {
+                    "type": "Point",
+                    "coordinates": [longitude, latitude]
                 }
             }
-        }
+            listings_collection.insert_one(listing)
 
-    # Lấy danh sách nhà trọ từ MongoDB
-    listings = list(listings_collection.find(query, {"_id": 0}))
-    return jsonify(listings)
+            return jsonify({"success": True, "message": "Nhà trọ đã được thêm thành công!"}), 201
+        except Exception as e:
+            print("Lỗi khi thêm nhà trọ:", str(e))
+            return jsonify({"success": False, "message": "Đã xảy ra lỗi khi thêm nhà trọ"}), 500
 
-@app.route("/add_listing", methods=["POST"])
-def add_listing():
-    data = request.json
-    title = data.get("title")
-    address = data.get("address")
-    price = data.get("price")
-    image_url = data.get("image_url")
-    video_url = data.get("video_url")
-    
-    # Xác định tọa độ từ địa chỉ
-    latitude, longitude = geocode_address(address)
-    
-    listing = {
-        "title": title,
-        "address": address,
-        "price": price,
-        "latitude": latitude,
-        "longitude": longitude,
-        "image_url": image_url,
-        "video_url": video_url,
-        "location": {
-            "type": "Point",
-            "coordinates": [longitude, latitude]
-        }
-    }
-    
-    listings_collection.insert_one(listing)
-    return jsonify({"success": True, "message": "Nhà trọ đã được thêm!"})
+    # Nếu là GET, trả về giao diện thêm nhà trọ
+    return render_template("add_listing.html")
 
 # Serve static files (CSS, JS, images)
 @app.route("/static/<path:filename>")

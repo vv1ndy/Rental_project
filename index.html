@@ -8,6 +8,7 @@
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js"></script>
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/static/js/script.js" defer></script>
 </head>
 <body>
     <header>
@@ -15,7 +16,7 @@
             <a href="index.html" class="logo">Tìm Nhà Trọ</a>
             <ul class="nav-menu">
                 <li><a href="index.html">Trang chủ</a></li>
-                <li><a href="add_listing.html">Đăng tin</a></li>
+                <li><a href="{{ url_for('add_listing') }}">Đăng nhà trọ</a></li>
                 <li><a href="#">Quản lý nhà trọ</a></li>
                 <li><a href="#">Đăng nhập</a></li>
             </ul>
@@ -26,8 +27,27 @@
         <h2>Danh sách nhà trọ</h2>
         <div class="search-form">
             <form id="search-form">
-                <label for="search-address">Tìm kiếm theo địa chỉ:</label>
-                <input type="text" id="search-address" name="search-address" placeholder="Nhập tên đường hoặc khu vực">
+                <!-- Lọc theo khu vực -->
+                <label for="area-filter">Lọc theo khu vực:</label>
+                <select id="area-filter">
+                    <option value="">Tất cả</option>
+                    <option value="Cầu Giấy">Cầu Giấy</option>
+                    <option value="Hoàng Mai">Hoàng Mai</option>
+                    <option value="Đống Đa">Đống Đa</option>
+                    <option value="Hai Bà Trưng">Hai Bà Trưng</option>
+                    <!-- Thêm các khu vực khác nếu cần -->
+                </select>
+
+                <!-- Lọc theo khoảng giá -->
+                <label for="price-filter">Lọc theo khoảng giá:</label>
+                <select id="price-filter">
+                    <option value="">Tất cả</option>
+                    <option value="0-3">Dưới 3 triệu</option>
+                    <option value="3-5">3 - 5 triệu</option>
+                    <option value="5-7">5 - 7 triệu</option>
+                    <option value="7-">Trên 7 triệu</option>
+                </select>
+
                 <button type="submit">Tìm kiếm</button>
             </form>
         </div>
@@ -39,77 +59,5 @@
         
         <div id="map"></div>
     </div>
-    
-    <script>
-        mapboxgl.accessToken = "pk.eyJ1IjoicGhvbmdkZCIsImEiOiJjbTg4Z25ocnAwMTgzMmlwcHU4N3hobmo5In0.hna31Ganho4KuG5Ml5fw1g";
-        var map = new mapboxgl.Map({
-            container: 'map',
-            style: 'mapbox://styles/mapbox/streets-v11',
-            center: [105.854444, 21.0285], // Mặc định Hà Nội
-            zoom: 12
-        });
-        
-        function loadListings(longitude, latitude) {
-            let url = '/get_listings';
-            if (longitude && latitude) {
-                url += `?longitude=${longitude}&latitude=${latitude}`;
-            }
-
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    let container = document.getElementById('listing-container');
-                    container.innerHTML = '';
-                    
-                    data.forEach(listing => {
-                        let div = document.createElement('div');
-                        div.classList.add('listing-item');
-                        div.innerHTML = `
-                            <h3>${listing.title}</h3>
-                            <p><strong>Địa chỉ:</strong> ${listing.address}</p>
-                            <p><strong>Giá thuê:</strong> ${listing.price} VNĐ</p>
-                            <img src="${listing.image}" alt="Hình ảnh nhà trọ">
-                        `;
-                        container.appendChild(div);
-                        
-                        let marker = new mapboxgl.Marker()
-                            .setLngLat([listing.longitude, listing.latitude])
-                            .setPopup(new mapboxgl.Popup().setHTML(`<h3>${listing.title}</h3><p>${listing.address}</p>`))
-                            .addTo(map);
-                    });
-                })
-                .catch(error => console.error('Lỗi khi tải danh sách:', error));
-        }
-        
-        document.addEventListener("DOMContentLoaded", function() {
-            loadListings();
-        });
-
-        document.getElementById('search-form').addEventListener('submit', async function(event) {
-            event.preventDefault();
-
-            const address = document.getElementById('search-address').value;
-
-            try {
-                const geocodeResponse = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(address)}.json?access_token=${mapboxgl.accessToken}`);
-                const geocodeData = await geocodeResponse.json();
-                
-                if (geocodeData.features.length === 0) {
-                    alert('Không tìm thấy địa chỉ!');
-                    return;
-                }
-
-                const [longitude, latitude] = geocodeData.features[0].center;
-
-                // Fly to the searched location
-                map.flyTo({ center: [longitude, latitude], zoom: 15 });
-
-                // Load listings near the searched location
-                loadListings(longitude, latitude);
-            } catch (error) {
-                console.error('Lỗi khi tìm kiếm địa chỉ:', error);
-            }
-        });
-    </script>
 </body>
 </html>
