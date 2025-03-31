@@ -1,0 +1,108 @@
+[
+    {
+        "title": "Phòng trọ tiện nghi Hoàng Mai",
+        "name": "Phạm Trường Minh",
+        "phonenumber": "0973010196",
+        "address": "313 linh nam , Đường Lĩnh Nam, Phường Lĩnh Nam, Quận Hoàng Mai, Hà Nội",
+        "price": "2,700,000 VNĐ",
+        "latitude": 21.0362,
+        "longitude": 105.7905,
+        "image_url": [
+            "https://cdn.chotot.com/d-pYBs4QkxiAFv5wfhA9z02bsiEpO6FS-XwIOWi1PXY/preset:view/plain/39adf6f49d6f64d73c821b1b8a0f1cac-2916965065715422893.jpg",
+            "https://cdn.chotot.com/e-t3T4z9QGv1lA4Yd1lpf_rJnoekBky2ctNisAwtZHs/preset:view/plain/262c517e5bc88acc71af1585392885f3-2916965064688709150.jpg",
+            "https://cdn.chotot.com/V6Ah33aI2R2G0EDUB3iHhoS2z3-3GrN5kpV84bEF9uw/preset:view/plain/4073bf043904fb269227c5604d8486ac-2916965064738824383.jpg",
+            "https://cdn.chotot.com/7aY02KGBxWlHJDWYOYDsu5wvoyBkFZ2LGyJ6riF_U-g/preset:view/plain/f13d253238f86f3b8c8100911a0dd00b-2916965086117238445.jpg"
+        ],
+        "description": ""
+    },
+    {
+        "title": "Chung cư mini Hoàng Mai",
+        "name": "Nguyễn Văn Tuấn",
+        "phonenumber": "0936885422",
+        "address": "Số 51, Đường Kim Đồng, Phường Giáp Bát, Hoàng Mai, Hà Nội",
+        "price": "5,000,000 VNĐ",
+        "latitude": 20.9876,
+        "longitude": 105.8417,
+        "image_url": "https://via.placeholder.com/300"
+    },
+    {
+        "title": "Nhà trọ sinh viên Hoàng Mai",
+        "name": "Hoàng Phát",
+        "phonenumber": "0877417917",
+        "address": "274, Đường Giáp Bát, Phường Giáp Bát, Hoàng Mai, Hà Nội",
+        "price": "5,000,000 VNĐ",
+        "latitude": 21.0075,
+        "longitude": 105.8292,
+        "image_url": "https://via.placeholder.com/300"
+    },
+    {
+        "title": "Phòng trọ giá rẻ Thanh Xuân",
+        "name": "Chị Liên",
+        "phonenumber": "0888336536",
+        "address": "126 Đường Triều Khúc, Phường Hạ Đình, Thanh Xuân, Hà Nội",
+        "price": "3,500,000 VNĐ",
+        "latitude": 21.0685,
+        "longitude": 105.8175,
+        "image_url": "https://via.placeholder.com/300"
+    },
+    {
+        "title": "Nhà trọ trung tâm Cầu Giấy",
+        "name": "Trần Văn Hoàng",
+        "phonenumber": "0977636508",
+        "address": "154 Phố Khúc Thừa Dụ, Phường Dịch Vọng, Cầu Giấy, Hà Nội",
+        "price": "4,800,000 VNĐ",
+        "latitude": 21.0333,
+        "longitude": 105.8142,
+        "image_url": "https://via.placeholder.com/300"
+    },
+    {
+        "title": "Chung cư mini Hai Bà Trưng",
+        "name": "Anh Hoàn",
+        "phonenumber": "0976118630",
+        "address": "116 Ngõ Tự Do, Phố Trần Đại Nghĩa, Phường Đồng Tâm, Hai Bà Trưng, Hà Nội",
+        "price": "4,300,000 VNĐ",
+        "latitude": 21.0048,
+        "longitude": 105.8545,
+        "image_url": "https://via.placeholder.com/300"
+    },
+    {
+        "title": "Phòng trọ đẹp Hai Bà Trưng",
+        "name": "Chị Hương",
+        "phonenumber": "0385353033",
+        "address": "7C/18/686 Đường Bạch Đằng, Phường Bạch Đằng, Hai Bà Trưng, Hà Nội",
+        "price": "3,500,000 VNĐ",
+        "latitude": 20.9951,
+        "longitude": 105.8097,
+        "image_url": "https://via.placeholder.com/300"
+    },
+    {
+        "title": "Nhà trọ ấm cúng Hai Bà Trưng",
+        "name": "Nguyễn Thanh Dung",
+        "phonenumber": "0372320601",
+        "address": "ngõ 40 Tạ Quang Bửu - Bách Khoa, Hai Bà Trưng, Hà Nội",
+        "price": "4,500,000 VNĐ",
+        "latitude": 20.9723,
+        "longitude": 105.7771,
+        "image_url": "https://via.placeholder.com/300"
+    },
+    {
+        "title": "Chung cư mini Hai Bà Trưng",
+        "name": "Chị Giang",
+        "phonenumber": "0988630739",
+        "address": "SN 19 ngách 15/75 ngõ 281, Đường Trương Định, Phường Trương Định, Hai Bà Trưng, Hà Nội",
+        "price": "2,500,000 VNĐ",
+        "latitude": 21.0283,
+        "longitude": 105.7819,
+        "image_url": "https://via.placeholder.com/300"
+    },
+    {
+        "title": "Phòng trọ rộng rãi Hai Bà Trưng",
+        "name": "Anh Thao",
+        "phonenumber": "0964347888",
+        "address": "149 Đường Trần Khát Chân, Phường Bạch Đằng, Hai Bà Trưng, Hà Nội",
+        "price": "4,600,000 VNĐ",
+        "latitude": 21.0405,
+        "longitude": 105.7642,
+        "image_url": "https://via.placeholder.com/300"
+    }
+]

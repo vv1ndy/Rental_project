@@ -33,6 +33,8 @@ function displayListings(listings) {
         div.classList.add('listing-item');
         div.innerHTML = `
             <h3>${listing.title}</h3>
+            <p><strong>Họ và tên chủ trọ:</strong> ${listing.name}</p>
+            <p><strong>Số điện thoại:</strong> ${listing.phonenumber}</p>
             <p><strong>Địa chỉ:</strong> ${listing.address}</p>
             <p><strong>Giá thuê:</strong> ${listing.price} VNĐ</p>
             <img src="${listing.image_url}" alt="Hình ảnh nhà trọ">
@@ -94,6 +96,8 @@ document.getElementById('add-listing-form').addEventListener('submit', async fun
     event.preventDefault(); // Ngăn form gửi request mặc định
 
     const title = document.getElementById('title').value;
+    const name = document.getElementById('name').value;
+    const phonenumber = document.getElementById('phonenumber').value;
     const address = document.getElementById('address').value;
     const price = document.getElementById('price').value;
     const image = document.getElementById('image').value;
@@ -119,6 +123,8 @@ document.getElementById('add-listing-form').addEventListener('submit', async fun
             },
             body: JSON.stringify({
                 title,
+                name,
+                phonenumber,
                 address,
                 price,
                 image_url: image,

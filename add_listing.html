@@ -16,7 +16,6 @@
             <a href="/" class="logo">Tìm Nhà Trọ</a>
             <ul class="nav-menu">
                 <li><a href="/">Trang chủ</a></li>
-                <li><a href="{{ url_for('add_listing') }}">Đăng nhà trọ</a></li>
                 <li><a href="#">Quản lý nhà trọ</a></li>
                 <li><a href="#">Đăng nhập</a></li>
             </ul>
@@ -28,6 +27,12 @@
         <form id="add-listing-form">
             <label for="title">Tên nhà trọ:</label>
             <input type="text" id="title" name="title" required>
+
+            <label for="name">Họ và tên chủ trọ:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="phonenumber">Số điện thoại:</label>
+            <input type="text" id="phonenumber" name="phonenumber" required>
 
             <label for="address">Địa chỉ:</label>
             <input type="text" id="address" name="address" required>
