@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhà trọ</title>
+    <link rel="stylesheet" href="/static/css/style.css">  <!-- Đường dẫn đến file CSS -->
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/static/js/script.js" defer></script>  <!-- Đường dẫn đến file JS -->
+</head>
+<body>
+    <header>
+        <div class="navbar">
+            <a href="/" class="logo">Tìm Nhà Trọ</a>
+            <ul class="nav-menu">
+                <li><a href="/">Trang chủ</a></li>
+                <li><a href="#">Quản lý nhà trọ</a></li>
+                <li><a href="#">Đăng nhập</a></li>
+            </ul>
+        </div>
+    </header>
+    
+    <div class="container">
+        <h2>Đăng nhà trọ mới</h2>
+        <form id="add-listing-form">
+            <label for="title">Tên nhà trọ:</label>
+            <input type="text" id="title" name="title" required>
+
+            <label for="name">Họ và tên chủ trọ:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="phonenumber">Số điện thoại:</label>
+            <input type="text" id="phonenumber" name="phonenumber" required>
+
+            <label for="address">Địa chỉ:</label>
+            <input type="text" id="address" name="address" required>
+
+            <label for="price">Giá thuê (VNĐ):</label>
+            <input type="number" id="price" name="price" required>
+
+            <label for="image">Hình ảnh (URL):</label>
+            <input type="url" id="image" name="image" required>
+
+            <label for="description">Mô tả:</label>
+            <textarea id="description" name="description" rows="4" required></textarea>
+
+            <button type="submit">Đăng nhà trọ</button>
+        </form>
+    </div>
+</body>
+</html>

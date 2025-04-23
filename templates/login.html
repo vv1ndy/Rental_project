@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập - Tìm Nhà Trọ</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="navbar">
+            <a href="/" class="logo">
+                <i class="fas fa-home"></i> Tìm Nhà Trọ
+            </a>
+            <ul class="nav-menu">
+                <li><a href="/"><i class="fas fa-home"></i> Trang chủ</a></li>
+                <li><a href="{{ url_for('add_listing') }}"><i class="fas fa-plus-circle"></i> Đăng nhà trọ</a></li>
+                <li><a href="#"><i class="fas fa-cog"></i> Quản lý</a></li>
+                <li><a href="{{ url_for('register') }}"><i class="fas fa-user-plus"></i> Đăng ký</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="auth-container">
+            <div class="auth-box">
+                <h2><i class="fas fa-sign-in-alt"></i> Đăng nhập</h2>
+                
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <form id="login-form" method="POST" action="{{ url_for('login') }}">
+                    <div class="form-group">
+                        <label for="email"><i class="fas fa-envelope"></i> Email</label>
+                        <input type="email" id="email" name="email" required placeholder="Nhập email của bạn">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password"><i class="fas fa-lock"></i> Mật khẩu</label>
+                        <div class="password-input">
+                            <input type="password" id="password" name="password" required placeholder="Nhập mật khẩu">
+                            <button type="button" class="toggle-password">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="remember-me">
+                        <input type="checkbox" id="remember" name="remember">
+                        <label for="remember">Ghi nhớ đăng nhập</label>
+                    </div>
+
+                    <button type="submit" class="auth-button">
+                        <i class="fas fa-sign-in-alt"></i> Đăng nhập
+                    </button>
+
+                    <div class="auth-links">
+                        <a href="#" class="forgot-password">
+                            <i class="fas fa-question-circle"></i> Quên mật khẩu?
+                        </a>
+                        <a href="{{ url_for('register') }}">
+                            <i class="fas fa-user-plus"></i> Chưa có tài khoản? Đăng ký ngay
+                        </a>
+                    </div>
+                </form>
+
+                <div class="social-login">
+                    <p>Hoặc đăng nhập bằng</p>
+                    <div class="social-buttons">
+                        <button type="button" class="social-button google">
+                            <i class="fab fa-google"></i> Google
+                        </button>
+                        <button type="button" class="social-button facebook">
+                            <i class="fab fa-facebook-f"></i> Facebook
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Tìm Nhà Trọ. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Hiển thị/ẩn mật khẩu
+        document.querySelectorAll('.toggle-password').forEach(button => {
+            button.addEventListener('click', function() {
+                const passwordInput = this.parentElement.querySelector('input');
+                const icon = this.querySelector('i');
+                
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                } else {
+                    passwordInput.type = 'password';
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                }
+            });
+        });
+
+        // Form validation
+        const form = document.getElementById('login-form');
+        const email = document.getElementById('email');
+        const password = document.getElementById('password');
+
+        form.addEventListener('submit', function(e) {
+            let isValid = true;
+            
+            // Kiểm tra email
+            if (!email.value.includes('@')) {
+                isValid = false;
+                email.parentElement.classList.add('error');
+                if (!email.parentElement.querySelector('.error-message')) {
+                    const errorMessage = document.createElement('span');
+                    errorMessage.className = 'error-message';
+                    errorMessage.textContent = 'Email không hợp lệ';
+                    email.parentElement.appendChild(errorMessage);
+                }
+            } else {
+                email.parentElement.classList.remove('error');
+                const errorMessage = email.parentElement.querySelector('.error-message');
+                if (errorMessage) {
+                    errorMessage.remove();
+                }
+            }
+
+            // Kiểm tra mật khẩu
+            if (password.value.length < 6) {
+                isValid = false;
+                password.parentElement.parentElement.classList.add('error');
+                if (!password.parentElement.parentElement.querySelector('.error-message')) {
+                    const errorMessage = document.createElement('span');
+                    errorMessage.className = 'error-message';
+                    errorMessage.textContent = 'Mật khẩu phải có ít nhất 6 ký tự';
+                    password.parentElement.parentElement.appendChild(errorMessage);
+                }
+            } else {
+                password.parentElement.parentElement.classList.remove('error');
+                const errorMessage = password.parentElement.parentElement.querySelector('.error-message');
+                if (errorMessage) {
+                    errorMessage.remove();
+                }
+            }
+
+            if (!isValid) {
+                e.preventDefault();
+            }
+        });
+
+        // Real-time validation
+        [email, password].forEach(input => {
+            input.addEventListener('input', function() {
+                if (this.parentElement.classList.contains('error')) {
+                    this.parentElement.classList.remove('error');
+                    const errorMessage = this.parentElement.querySelector('.error-message');
+                    if (errorMessage) {
+                        errorMessage.remove();
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html> 

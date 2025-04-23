@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tìm Nhà Trọ - Trang chủ</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/static/js/script.js" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="navbar">
+            <a href="/" class="logo">
+                <i class="fas fa-home"></i> Tìm Nhà Trọ
+            </a>
+            <ul class="nav-menu">
+                <li><a href="/"><i class="fas fa-home"></i> Trang chủ</a></li>
+                <li><a href="{{ url_for('add_listing') }}"><i class="fas fa-plus-circle"></i> Đăng nhà trọ</a></li>
+                <li><a href="#"><i class="fas fa-cog"></i> Quản lý</a></li>
+                <li><a href="/login"><i class="fas fa-user"></i> Đăng nhập</a></li>
+            </ul>
+        </div>
+    </header>
+    
+    <div class="container">
+        <h2>Danh sách nhà trọ</h2>
+        <div class="search-form">
+            <form id="search-form">
+                <div class="form-group">
+                    <label for="area-filter"><i class="fas fa-map-marker-alt"></i> Khu vực</label>
+                    <select id="area-filter">
+                        <option value="">Tất cả khu vực</option>
+                        <option value="Cầu Giấy">Cầu Giấy</option>
+                        <option value="Hoàng Mai">Hoàng Mai</option>
+                        <option value="Đống Đa">Đống Đa</option>
+                        <option value="Hai Bà Trưng">Hai Bà Trưng</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="price-filter"><i class="fas fa-tag"></i> Khoảng giá</label>
+                    <select id="price-filter">
+                        <option value="">Tất cả mức giá</option>
+                        <option value="0-3">Dưới 3 triệu</option>
+                        <option value="3-5">3 - 5 triệu</option>
+                        <option value="5-7">5 - 7 triệu</option>
+                        <option value="7-">Trên 7 triệu</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="sort-by"><i class="fas fa-sort"></i> Sắp xếp</label>
+                    <select id="sort-by">
+                        <option value="newest">Mới nhất</option>
+                        <option value="price-asc">Giá tăng dần</option>
+                        <option value="price-desc">Giá giảm dần</option>
+                    </select>
+                </div>
+
+                <button type="submit">
+                    <i class="fas fa-search"></i> Tìm kiếm
+                </button>
+            </form>
+        </div>
+
+        <div class="listings" id="listing-container">
+            <!-- Các nhà trọ sẽ được hiển thị tại đây -->
+        </div>
+        
+        <div id="map"></div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Tìm Nhà Trọ. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
